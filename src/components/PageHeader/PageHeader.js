@@ -3,7 +3,6 @@ import React from "react";
 // Bootstrap Imports
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import Col from "react-bootstrap/Col";
 // Images
 import BadgeImg from "./images/8sm_badge.png";
 

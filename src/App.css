@@ -1,1 +1,4 @@
 /* App level CSS */
+.hoverMouse:hover {
+  cursor: pointer;
+}

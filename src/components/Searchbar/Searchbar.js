@@ -97,7 +97,7 @@ const Searchbar = ({ placeholder, data, handleAddItem }) => {
           <Button
             size="lg"
             variant="info"
-            style={{ marginTop: "105px" }}
+            style={{ marginTop: "1em" }}
             onClick={() => handleAddItem(currentItem, currentAmount)}
           >
             Add Item
