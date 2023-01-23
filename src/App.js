@@ -32,15 +32,18 @@ function App() {
       case "Amarr":
         setTradehub("&usesystem=30002187") // Amarr
         break
+      case "Rens":
+        setTradehub("&usesystem=30002510") // Rens
+        break
+      case "Dodixie":
+        setTradehub("&usesystem=30002659") // Dodixie
+        break
       default: // Jita
-        setTradehub("&usesystem=30000142")
+        setTradehub("&usesystem=30000142") // Default is Jita
         break
     }
   }
 
-  // const amarr = "&usesystem=30002187"
-
-  // THIS IS WHERE I LEFT OFF, CONTINUE INPLEMENTING handleAddItem()
   const handleAddItem = (currentItem, amount) => {
     let currentItemWithAmount = currentItem
     currentItemWithAmount.amount = amount
@@ -124,6 +127,8 @@ function App() {
             <Form.Select onChange={(e) => changeTradehub(e.target.value)}>
               <option value="Jita">Jita</option>
               <option value="Amarr">Amarr</option>
+              <option value="Rens">Rens</option>
+              <option value="Dodixie">Dodixie</option>
             </Form.Select>
           </Col>
           <Col sm="6" className="">
