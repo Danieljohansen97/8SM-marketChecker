@@ -13,6 +13,7 @@ import PageHeader from "./components/PageHeader/PageHeader"
 import Searchbar from "./components/Searchbar/Searchbar"
 import FetchedItemsTable from "./components/fetchedItemsTable/FetchedItemsTable"
 import PageFooter from "./components/PageFooter/PageFooter"
+import ExportToExcel from "./components/ExportToExcel/ExportToExcel"
 // Hooks
 import useFetchPrices from "./customHooks/useFetchPrices"
 // resources
@@ -80,6 +81,9 @@ function App() {
           </Col>
         </Row>
         <FetchedItemsTable fetchedItems={fetchedItems} />
+        {fetchedItems.length > 0 && (
+          <ExportToExcel fetchedItems={fetchedItems} />
+        )}
         {shoppingList.length > 0 && (
           <Row>
             <Col xs={12}>
