@@ -1,111 +1,107 @@
 // React imports
-import React, { useState } from "react";
+import React, { useState } from "react"
 // Stylesheet
-import "./Searchbar.css";
-// Icons
-import SearchIcon from "@material-ui/icons/Search";
-import CloseIcon from "@material-ui/icons/Close";
+import "./Searchbar.css"
 // Bootstrap imports
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container"
+import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col"
+import Button from "react-bootstrap/Button"
+import ListGroup from "react-bootstrap/ListGroup"
+import Form from "react-bootstrap/Form"
+import InputGroup from "react-bootstrap/InputGroup"
 
 const Searchbar = ({ placeholder, data, handleAddItem }) => {
-  const [filterData, setFilterData] = useState([]);
-  const [wordEntered, setWordEntered] = useState("");
+  const [filteredData, setFilteredData] = useState([])
+  const [searchInput, setSearchInput] = useState("")
   const [currentItem, setCurrentItem] = useState({})
   const [currentAmount, setCurrentAmount] = useState(1)
 
-  const handleFilter = (event) => {
-    const searchWord = event.target.value;
-    setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
-      return value.name.toLowerCase().includes(searchWord.toLowerCase());
-    });
-    if (searchWord === "") {
-      setFilterData([]);
-    } else {
-      setFilterData(newFilter);
-    }
-  };
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value.toLowerCase()
+    setSearchInput(searchTerm)
+    const filteredList = data
+      .filter((item) => item.name.toLowerCase().includes(searchTerm))
+      .sort((a, b) => {
+        const aIndex = a.name.toLowerCase().indexOf(searchTerm)
+        const bIndex = b.name.toLowerCase().indexOf(searchTerm)
+        return aIndex - bIndex
+      })
+    setFilteredData(filteredList)
+  }
 
-  const handleAutocomplete = (value) => {
-    //setChosenItem(value)
-    // console.log(value.name + "|" + value.typeId);
-    setWordEntered(value.name);
-    setCurrentItem({
-      name: value.name,
-      typeid: value.typeId,
-    })
-    setFilterData([]);
-  };
+  const handleAutocomplete = (item) => {
+    setSearchInput(item.name)
+    setCurrentItem(item)
+    setFilteredData([])
+  }
 
-  const clearInput = () => {
-    setFilterData([]);
-    setWordEntered("");
-  };
+  const handleAmountChange = (event) => {
+    setCurrentAmount(event.target.value)
+  }
+
+  function handleClickAddItem() {
+    handleAddItem(currentItem, currentAmount)
+    setSearchInput("")
+    setCurrentAmount(1)
+  }
 
   return (
-    <Container fluid>
-      <Row>
-        <Col xs="12" md="7">
-          <div className="search">
-            <div className="searchInputs">
-              <input
+    <Row>
+      <Container fluid>
+        <Row>
+          <Col xs="12">
+            <InputGroup>
+              <Form.Control
+                size="lg"
                 placeholder={placeholder}
-                value={wordEntered}
+                value={searchInput}
                 type="text"
-                onChange={handleFilter}
+                onChange={handleSearch}
               />
-              <div className="searchIcon">
-                {filterData.length === 0 && wordEntered === "" ? (
-                  <SearchIcon />
-                ) : (
-                  <CloseIcon onClick={clearInput} id="clearBtn" />
-                )}
-              </div>
-            </div>
-            {filterData.length !== 0 && (
-              <div className="dataResult">
-                {filterData.slice(0, 15).map((value, key) => {
-                  return (
-                    <a
-                      key={key}
-                      className="dataItem"
-                      href="!#"
-                      name={value.name}
-                      typeid={value.typeid}
-                      onClick={() => handleAutocomplete(value)}
-                    >
-                      <p>{value.name}</p>
-                    </a>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </Col>
-        <Col xs="12" md="3">
-          <div className="search">
-            <div className="searchInputs">
-              <input placeholder="Amount" value={currentAmount} onChange={(e) => setCurrentAmount(e.target.value)}></input>
-            </div>
-          </div>
-        </Col>
-        <Col xs="12" md="2">
-          <Button
-            size="lg"
-            variant="info"
-            style={{ marginTop: "1em" }}
-            onClick={() => handleAddItem(currentItem, currentAmount)}
-          >
-            Add Item
-          </Button>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+              <Form.Control
+                size="lg"
+                type="number"
+                placeholder="Amount"
+                value={currentAmount}
+                onChange={handleAmountChange}
+              />
+              <Button size="lg" variant="info" onClick={handleClickAddItem}>
+                Add item
+              </Button>
+            </InputGroup>
 
-export default Searchbar;
+            {filteredData.length > 0 && searchInput !== "" && (
+              <ListGroup className="dataResult">
+                {filteredData.slice(0, 15).map((item, index) => (
+                  <ListGroup.Item
+                    key={index}
+                    onClick={() => handleAutocomplete(item)}
+                    action
+                  >
+                    {item.name
+                      .split(new RegExp(`(${searchInput})`, "gi"))
+                      .map((part, i) => (
+                        <span
+                          key={i}
+                          style={
+                            part.toLowerCase() === searchInput.toLowerCase()
+                              ? { fontWeight: "bold" }
+                              : {}
+                          }
+                        >
+                          {part}
+                        </span>
+                      ))}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            )}
+          </Col>
+        </Row>
+      </Container>
+    </Row>
+  )
+}
+
+export default Searchbar

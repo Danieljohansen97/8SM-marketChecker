@@ -1,10 +1,11 @@
 // React imports
-import React from "react";
+import React from "react"
 // Bootstrap Imports
-import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container"
+import Navbar from "react-bootstrap/Navbar"
+import { Row, Col } from "react-bootstrap"
 // Images
-import BadgeImg from "./images/8sm_badge.png";
+import BadgeImg from "./images/8sm_badge.png"
 
 const PageHeader = () => {
   return (
@@ -18,8 +19,15 @@ const PageHeader = () => {
           <Navbar.Text className="mx-1">v2.0</Navbar.Text>
         </Container>
       </Navbar>
+      <Container>
+        <Row className="text-center">
+          <Col>
+            <h1 className="text-white">8SM Market Checker</h1>
+          </Col>
+        </Row>
+      </Container>
     </div>
-  );
-};
+  )
+}
 
-export default PageHeader;
+export default PageHeader
